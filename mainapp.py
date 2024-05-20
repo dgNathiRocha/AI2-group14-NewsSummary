@@ -10,8 +10,8 @@ from langchain.prompts import PromptTemplate
 # Initialize GNews object
 google_news = GNews()
 google_news.period = '1d'  # News from last 1 days
-google_news.max_results = 4  # Number of responses across a keyword
-google_news.country = 'United States' # News from a specific country 
+google_news.max_results = 5 # Number of responses across a keyword
+google_news.country = 'USA' # News from a specific country 
 google_news.language = 'en'  # News in English
 google_news.exclude_websites = ['yahoo.com', 'cnn.com', 'msn.con', 'reuters.com'] # Exclude news from specific website i.e Yahoo.com and CNN.com
 #google_news.start_date = (2024, 5, 10) # Search from 1st Jan 2023\n",
@@ -22,7 +22,7 @@ llm = VertexAI(temperature=0.1,
                model='text-bison-32k',
                top_k=40,
                top_p=0.8,
-               max_output_token=1024)
+               max_output_token=2048)
 
 
 
@@ -30,7 +30,7 @@ llm2 = VertexAI(temperature=0.8,
                model='text-bison-32k',
                top_k=40,
                top_p=0.8,
-               max_output_token=1024)
+               max_output_token=2048)
 
 def generate_summary(news_articles):
     # Prompt template for summarization
@@ -41,6 +41,7 @@ def generate_summary(news_articles):
                          3. Create summary in English
                          4. Don't stop half way of sentence
                          5. Generate the summary concisely
+                         6. Generate the summaries with maximum 300 words only
                          
                         {text}
                         
@@ -48,7 +49,7 @@ def generate_summary(news_articles):
     prompt = PromptTemplate.from_template(prompt_template)
 
     # Generate summary for each news item
-    for article in news_articles:  
+    for i, article in enumerate(news_articles[:5]):
         # Extract news content
         loader = UnstructuredURLLoader(urls=[article['url']])
         data = loader.load()
@@ -77,7 +78,9 @@ def generate_dissummary(news_articles):
                      3. Create summaries in English
                      4. Summarize using each person's personality with a critical viewpoint
                      5. Don't forget to include both party's perspective
-                     6. Don't stop halfway of the sentence
+                     6. Always finish the sentences
+                     7. If the text cannot be found or error, return: "Content empty"
+
                     
                     
                      First Party's Perspective:
@@ -91,7 +94,7 @@ def generate_dissummary(news_articles):
     prompt = PromptTemplate.from_template(prompt_template)
 
     # Generate summary for each news item
-    for article in news_articles:  
+    for i, article in enumerate(news_articles[:5]):
         # Extract news content
         loader = UnstructuredURLLoader(urls=[article['url']])
         data = loader.load()

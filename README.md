@@ -4,7 +4,7 @@ This repository contains a python code that demonstrates how to fetch the latest
 
 ## Overview
 
-A detailed tutorial on using APIs to retrieve news stories from reputable sources and using LLM to create summaries may be found in the code `app.py`.
+A detailed tutorial on using APIs to retrieve news stories from reputable sources and using LLM to create summaries may be found in the code `mainapp.py`.
 
 This project uses various types of technology and tool to create a structured online news summarization system. Below are keys components in the project:
 
@@ -31,7 +31,7 @@ To run the application, you need the following dependencies:
    ```
    git clone https://github.com/dgNathiRocha/AI2-group14-NewsSummary.git
    ```
-3. Launch any code environment and open the `app.py` python code.
+3. Launch any code environment and open the `mainapp.py` python code.
 4. Run below command on the terminal
  ```
    streamlit run app.py
