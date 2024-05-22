@@ -39,7 +39,7 @@ def generate_summary(news_articles):
                          1. If the text cannot be found or error, return: "Content empty"
                          2. Use only materials from the text supplied
                          3. Create summary in English
-                         4. Result the summarize only 4 sentences
+                         4. Result the summarize only 5 sentences
 
                         {text}
                         
@@ -71,11 +71,11 @@ def generate_summary(news_articles):
 def generate_dissummary(news_articles):
     # Prompt template for summarization
     prompt_template = """Generate a biased summary from the perspectives of the involved parties using the following steps:
-                     1. Always show both perspectives with their personality
+                     1. Show both perspectives with their personality
                      2. If the text cannot be found or an error occurs, return: "Content empty"
                      3. Create summaries in English
                      4. Summarize using each person's personality with a critical viewpoint
-                     5. Result the summarize only 2 sentences for each perspective
+                     5. Result the summarize for only 1 sentences for each perspective
                     
                     
                      First Party's Perspective:
@@ -89,7 +89,7 @@ def generate_dissummary(news_articles):
     prompt = PromptTemplate.from_template(prompt_template)
 
     # Generate summary for each news item
-    for i, article in enumerate(news_articles[:3]):
+    for i, article in enumerate(news_articles[:5]):
         # Extract news content
         loader = UnstructuredURLLoader(urls=[article['url']])
         data = loader.load()
@@ -118,16 +118,17 @@ st.title('Welcome to Short News App!')
 row1 = st.columns([4, 4, 4])
 
 # Column for the expander and its contents
-
+st.write('If you want to search in specific topics, please typed in "world", "business", "sports", "health", "science", "technology", "entertainment"')
 my_expander = st.expander(label='Expand me for searching news!')
 with my_expander:
     row = st.columns(2)
     with row[0]:
         search = st.text_input('Search your favorite topic:')
     with row[1]:
-        submitted = st.button("Submit")
-        dissubmit = st.button("Compare")
-        topic = st.button("Topic")
+        submitted = st.button("Summarize by keyword")
+        dissubmit = st.button("Summarize by keyword with perspective")
+        topic = st.button("Summarize by topic")
+        topiccom = st.button("Summarize by topic with perspective")
        
 
 # Display news summaries
@@ -154,6 +155,15 @@ if topic:
         news_by_topic = google_news.get_news_by_topic(search)
 
         generate_summary(news_by_topic)
+    except Exception as e:
+        st.error(f"An error occurred: {e}")
+
+if topiccom:
+    try:
+            # Get news by keyword
+        news_by_topic = google_news.get_news_by_topic(search)
+
+        generate_dissummary(news_by_topic)
     except Exception as e:
         st.error(f"An error occurred: {e}")
 
