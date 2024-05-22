@@ -20,7 +20,6 @@ This project uses various types of technology and tool to create a structured on
 To run the application, you need the following dependencies:
 
 - Python 3.10
-- Jupyter Notebook
 - GNews
 - Streamlit
 - Langchain
